@@ -250,6 +250,7 @@
                 @change="$v.payment.paymentMethod.$touch(); changePaymentMethod();"
               >
               <span class="checkmark"/>
+              <div v-show="showDetailsForMethod(method.code)" :id="method.code"/>
             </label>
           </div>
           <span class="validation-error" v-if="!$v.payment.paymentMethod.required">{{ $t('Field is required') }}</span>
@@ -322,6 +323,7 @@ import BaseInput from 'theme/components/core/blocks/Form/BaseInput'
 import BaseSelect from 'theme/components/core/blocks/Form/BaseSelect'
 import ButtonFull from 'theme/components/theme/ButtonFull'
 import Tooltip from 'theme/components/core/Tooltip'
+import PaymentMethodDetails from 'theme/components/core/blocks/Checkout/PaymentMethodDetails'
 
 export default {
   components: {
@@ -329,7 +331,8 @@ export default {
     BaseInput,
     BaseSelect,
     ButtonFull,
-    Tooltip
+    Tooltip,
+    PaymentMethodDetails
   },
   mixins: [Payment],
   computed: {

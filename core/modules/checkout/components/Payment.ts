@@ -25,11 +25,15 @@ export const Payment = {
       currentUser: (state: RootState) => state.user.current
     }),
     ...mapGetters({
-      paymentMethods: 'payment/paymentMethods'
+      paymentMethods: 'payment/paymentMethods',
+      currentMethod: 'payment/currentMethod'
     })
   },
   created () {
-    if (!this.payment.paymentMethod || this.notInMethods(this.payment.paymentMethod)) {
+    if (
+      !this.payment.paymentMethod ||
+      this.notInMethods(this.payment.paymentMethod)
+    ) {
       this.payment.paymentMethod = this.paymentMethods[0].code
     }
   },
@@ -75,7 +79,9 @@ export const Payment = {
                 lastName: addresses[i].lastname,
                 company: addresses[i].company,
                 country: addresses[i].country_id,
-                state: addresses[i].region.region ? addresses[i].region.region : '',
+                state: addresses[i].region.region
+                  ? addresses[i].region.region
+                  : '',
                 city: addresses[i].city,
                 streetAddress: addresses[i].street[0],
                 apartmentNumber: addresses[i].street[1],
@@ -144,7 +150,9 @@ export const Payment = {
               lastName: addresses[i].lastname,
               company: addresses[i].company,
               country: addresses[i].country_id,
-              state: addresses[i].region.region ? addresses[i].region.region : '',
+              state: addresses[i].region.region
+                ? addresses[i].region.region
+                : '',
               city: addresses[i].city,
               streetAddress: addresses[i].street[0],
               apartmentNumber: addresses[i].street[1],
@@ -179,9 +187,11 @@ export const Payment = {
     },
     getPaymentMethod () {
       for (let i = 0; i < this.paymentMethods.length; i++) {
-        if (this.paymentMethods[i].code === this.payment.paymentMethod) {
+        if (this.paymentMethods[i].code === this.currentMethod) {
           return {
-            title: this.paymentMethods[i].title ? this.paymentMethods[i].title : this.paymentMethods[i].name
+            title: this.paymentMethods[i].title
+              ? this.paymentMethods[i].title
+              : this.paymentMethods[i].name
           }
         }
       }
@@ -198,12 +208,28 @@ export const Payment = {
     },
     changePaymentMethod () {
       // reset the additional payment method component container if exists.
-      if (document.getElementById('checkout-order-review-additional-container')) {
-        document.getElementById('checkout-order-review-additional-container').innerHTML = '<div id="checkout-order-review-additional">&nbsp;</div>' // reset
+      if (
+        document.getElementById('checkout-order-review-additional-container')
+      ) {
+        document.getElementById(
+          'checkout-order-review-additional-container'
+        ).innerHTML =
+          '<div id="checkout-order-review-additional">&nbsp;</div>' // reset
       }
 
+      this.$store.dispatch(
+        'payment/updateSelectedMethod',
+        this.payment.paymentMethod
+      )
+
       // Let anyone listening know that we've changed payment method, usually a payment extension.
-      this.$bus.$emit('checkout-payment-method-changed', this.payment.paymentMethod)
+      this.$bus.$emit(
+        'checkout-payment-method-changed',
+        this.payment.paymentMethod
+      )
+    },
+    showDetailsForMethod (method) {
+      return method === this.currentMethod
     }
   }
 }
