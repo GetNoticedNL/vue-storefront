@@ -2,14 +2,10 @@ import { checkoutModule } from './store/checkout'
 import { paymentModule } from './store/payment'
 import { shippingModule } from './store/shipping'
 
-<<<<<<< HEAD
-import { VueStorefrontModule, VueStorefrontModuleConfig } from '@vue-storefront/core/lib/module'
-=======
 import {
   VueStorefrontModule,
   VueStorefrontModuleConfig
-} from '@vue-storefront/module'
->>>>>>> Start on implementing payments via vuex
+} from '@vue-storefront/core/lib/module'
 
 export const KEY = 'checkout'
 
