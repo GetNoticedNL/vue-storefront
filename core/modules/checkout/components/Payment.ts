@@ -217,10 +217,7 @@ export const Payment = {
           '<div id="checkout-order-review-additional">&nbsp;</div>' // reset
       }
 
-      this.$store.dispatch(
-        'payment/updateSelectedMethod',
-        this.payment.paymentMethod
-      )
+      this.$store.dispatch('payment/methodChanged', this.payment.paymentMethod)
 
       // Let anyone listening know that we've changed payment method, usually a payment extension.
       this.$bus.$emit(

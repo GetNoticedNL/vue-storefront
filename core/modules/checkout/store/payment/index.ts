@@ -12,7 +12,7 @@ export const paymentModule: Module<PaymentState, RootState> = {
         is_server_method: true
       }
     ],
-    selectedMethod: 'cashondelivery'
+    method: 'cashondelivery'
   },
   mutations: {
     addMethod (state, paymentMethod) {
@@ -21,8 +21,8 @@ export const paymentModule: Module<PaymentState, RootState> = {
     replaceMethods (state, paymentMethods) {
       state.methods = paymentMethods
     },
-    updateSelectedMethod (state, paymentMethod) {
-      state.selectedMethod = paymentMethod
+    changeMethod (state, paymentMethod) {
+      state.method = paymentMethod
     }
   },
   actions: {
@@ -32,8 +32,8 @@ export const paymentModule: Module<PaymentState, RootState> = {
     replaceMethods ({ commit }, paymentMethods) {
       commit('replaceMethods', paymentMethods)
     },
-    updateSelectedMethod ({ commit }, paymentMethod) {
-      commit('updateSelectedMethod', paymentMethod)
+    methodChanged ({ commit }, paymentMethod) {
+      commit('changeMethod', paymentMethod)
     }
   },
   getters: {
@@ -41,7 +41,7 @@ export const paymentModule: Module<PaymentState, RootState> = {
       return state.methods
     },
     currentMethod (state) {
-      return state.selectedMethod
+      return state.method
     }
   }
 }
